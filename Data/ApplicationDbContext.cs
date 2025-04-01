@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using DozoWeb.Models;
+﻿using DozoWeb.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DozoWeb.Data
 {
@@ -24,6 +24,10 @@ namespace DozoWeb.Data
                 .WithMany(c => c.Opiniones) // Una Cerveceria tiene muchas Opiniones
                 .HasForeignKey(o => o.CerveceriaId) // Opinion tiene una FK a Cerveceria
                 .OnDelete(DeleteBehavior.Cascade); // Elimina opiniones si se elimina la cervecería
+
+            modelBuilder.Entity<Cerveceria>()
+                .Property(c => c.PrecioPromedio)
+                .HasPrecision(10, 2); // 10 dígitos en total, 2 decimales
         }
 
     }

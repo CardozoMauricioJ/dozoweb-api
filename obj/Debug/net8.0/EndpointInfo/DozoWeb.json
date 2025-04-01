@@ -400,37 +400,6 @@
         }
       }
     },
-    "/api/Cervecerias/buscar": {
-      "post": {
-        "tags": [
-          "Cervecerias"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AreaData"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AreaData"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/AreaData"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
     "/api/Opiniones": {
       "get": {
         "tags": [
@@ -619,28 +588,6 @@
   },
   "components": {
     "schemas": {
-      "AreaData": {
-        "type": "object",
-        "properties": {
-          "latNorthEast": {
-            "type": "number",
-            "format": "double"
-          },
-          "lngNorthEast": {
-            "type": "number",
-            "format": "double"
-          },
-          "latSouthWest": {
-            "type": "number",
-            "format": "double"
-          },
-          "lngSouthWest": {
-            "type": "number",
-            "format": "double"
-          }
-        },
-        "additionalProperties": false
-      },
       "Cerveceria": {
         "required": [
           "direccion",

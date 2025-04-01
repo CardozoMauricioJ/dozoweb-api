@@ -230,29 +230,6 @@ namespace DozoWeb.Controllers
             return CreatedAtAction(nameof(GetCerveceria), new { id = cerveceria.Id }, cerveceria);
         }
 
-        [HttpPost("buscar")]
-        public IActionResult BuscarCervecerias([FromBody] AreaData areaData)
-        {
-            // Aquí recibimos las coordenadas del área
-            double latNorthEast = areaData.LatNorthEast;
-            double lngNorthEast = areaData.LngNorthEast;
-            double latSouthWest = areaData.LatSouthWest;
-            double lngSouthWest = areaData.LngSouthWest;
-
-            // Lógica para buscar cervecerías dentro de esos límites
-            var cervecerias = _context.Cervecerias
-                .Where(c => c.Latitud >= latSouthWest && c.Latitud <= latNorthEast &&
-                            c.Longitud >= lngSouthWest && c.Longitud <= lngNorthEast)
-                .ToList();
-
-            if (cervecerias.Count == 0)
-            {
-                return NotFound("No se encontraron cervecerías en el área seleccionada.");
-            }
-
-            return Ok(cervecerias);  // Devuelve las cervecerías encontradas
-        }
-
         // PUT: api/Cervecerias/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCerveceria(int id, Cerveceria cerveceria)

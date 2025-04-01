@@ -132,22 +132,6 @@
   {
     "ContainingType": "DozoWeb.Controllers.CerveceriasController",
     "Method": "BuscarCervecerias",
-    "RelativePath": "api/Cervecerias/buscar",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "areaData",
-        "Type": "DozoWeb.Models.AreaData",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "DozoWeb.Controllers.CerveceriasController",
-    "Method": "BuscarCervecerias",
     "RelativePath": "api/Cervecerias/Buscar",
     "HttpMethod": "GET",
     "IsController": true,
