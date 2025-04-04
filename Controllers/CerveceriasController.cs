@@ -29,9 +29,6 @@ namespace DozoWeb.Controllers
                 return BadRequest("Los parámetros de paginación deben ser mayores a 0.");
             }
 
-            // Construir la consulta inicial
-            //var query = _context.Cervecerias.AsQueryable();
-
             // Construir la consulta inicial con Eager Loading
             var query = _context.Cervecerias
                 .Include(c => c.Opiniones)
@@ -52,17 +49,20 @@ namespace DozoWeb.Controllers
                 .Take(pageSize)
                 .ToListAsync();
 
+            // Calcular el total de páginas
+            var totalPages = (int)Math.Ceiling((double)totalItems / pageSize); // Agregado
+
             // Crear una respuesta con metadatos
             var response = new
             {
                 TotalItems = totalItems,
                 Page = page,
                 PageSize = pageSize,
+                TotalPages = totalPages,
                 Items = cervecerias
             };
 
             return Ok(response);
-            //return await _context.Cervecerias.Include(cerveceria => cerveceria.Opiniones).ToListAsync();
         }
 
         // GET: api/Cervecerias/5
@@ -195,6 +195,23 @@ namespace DozoWeb.Controllers
             double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
 
             return RadioTierraEnKm * c * 1000; // Convertir a metros
+        }
+
+
+        // GET: api/Cervecerias/{cerveceriaId}/Opiniones
+        [HttpGet("{cerveceriaId}/Opiniones")]
+        public async Task<ActionResult<IEnumerable<Opinion>>> GetOpinionesPorCerveceria(int cerveceriaId)
+        {
+            var opiniones = await _context.Opiniones
+                .Where(o => o.CerveceriaId == cerveceriaId)
+                .ToListAsync();
+
+            if (opiniones == null || opiniones.Count == 0)
+            {
+                return NotFound("No se encontró opiniones.");
+            }
+
+            return Ok(opiniones);
         }
 
 

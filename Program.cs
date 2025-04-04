@@ -6,10 +6,23 @@ var builder = WebApplication.CreateBuilder(args);
 // Configura la cadena de conexión para el DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 builder.Services.AddControllers();
 //builder.Services.AddAuthorization();
 builder.Services.AddEndpointsApiExplorer(); // Para habilitar Swagger
 builder.Services.AddSwaggerGen(); // Configuración de Swagger
+
+// Configuración de CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:3000") // URL del frontend
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
+        });
+});
 
 var app = builder.Build();
 
@@ -20,14 +33,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(); // Interfaz de usuario para Swagger
 }
 
-
-app.UseCors(policy => policy
-    .AllowAnyOrigin()
-    .AllowAnyHeader()
-    .AllowAnyMethod());
-
-
 app.UseHttpsRedirection();
+
+// Usar CORS
+app.UseCors("AllowSpecificOrigin");
 
 app.UseAuthorization();
 
