@@ -10,7 +10,7 @@ namespace DozoWeb.Models
         public string Usuario { get; set; } // Nombre del usuario que deja la opinión
         [Range(1, 5, ErrorMessage = "El puntaje debe estar entre 1 y 5.")]
         public int Puntaje { get; set; }
-        public string Comentario { get; set; } // Comentario opcional
+        public string? Comentario { get; set; } // Comentario opcional
         public DateTime Fecha { get; set; } // Fecha de la opinión
 
         // Relación con Cerveceria

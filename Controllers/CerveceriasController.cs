@@ -198,17 +198,17 @@ namespace DozoWeb.Controllers
         }
 
 
-        // GET: api/Cervecerias/{cerveceriaId}/Opiniones
-        [HttpGet("{cerveceriaId}/Opiniones")]
-        public async Task<ActionResult<IEnumerable<Opinion>>> GetOpinionesPorCerveceria(int cerveceriaId)
+        // GET: api/Cervecerias/{CerveceriaId}/Opiniones
+        [HttpGet("{CerveceriaId}/Opiniones")]
+        public async Task<ActionResult<IEnumerable<Opinion>>> GetOpinionesPorCerveceria(int CerveceriaId)
         {
             var opiniones = await _context.Opiniones
-                .Where(o => o.CerveceriaId == cerveceriaId)
+                .Where(o => o.CerveceriaId == CerveceriaId)
                 .ToListAsync();
 
             if (opiniones == null || opiniones.Count == 0)
             {
-                return NotFound("No se encontró opiniones.");
+                return NotFound("Esta cervecería aún no tiene opiniones.");
             }
 
             return Ok(opiniones);
