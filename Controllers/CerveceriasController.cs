@@ -200,16 +200,43 @@ namespace DozoWeb.Controllers
 
         // GET: api/Cervecerias/{CerveceriaId}/Opiniones
         [HttpGet("{CerveceriaId}/Opiniones")]
-        public async Task<ActionResult<IEnumerable<Opinion>>> GetOpinionesPorCerveceria(int CerveceriaId)
+        public async Task<ActionResult<IEnumerable<Opinion>>> GetOpinionesPorCerveceria(
+            int CerveceriaId,
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 5)
         {
+            if (pageSize <= 0 || pageSize > 50)
+            {
+                return BadRequest("El tamaño de página debe ser mayor que 0 y menor o igual a 50.");
+            }
+
+            var totalOpiniones = await _context.Opiniones
+                .Where(o => o.CerveceriaId == CerveceriaId)
+                .CountAsync();
+
+            var totalPages = (int)Math.Ceiling((double)totalOpiniones / pageSize);
+
+            if (pageNumber < 1 || pageNumber > totalPages && totalPages > 0)
+            {
+                return NotFound("Página no encontrada.");
+            }
+
             var opiniones = await _context.Opiniones
                 .Where(o => o.CerveceriaId == CerveceriaId)
+                .OrderByDescending(o => o.Fecha)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
                 .ToListAsync();
 
-            if (opiniones == null || opiniones.Count == 0)
+            if (opiniones == null || !opiniones.Any())
             {
-                return NotFound("Esta cervecería aún no tiene opiniones.");
+                return Ok(new List<Opinion>());
             }
+
+            Response.Headers["X-Total-Count"] = totalOpiniones.ToString();
+            Response.Headers["X-Total-Pages"] = totalPages.ToString();
+            Response.Headers["X-Current-Page"] = pageNumber.ToString();
+            Response.Headers["X-Page-Size"] = pageSize.ToString();
 
             return Ok(opiniones);
         }

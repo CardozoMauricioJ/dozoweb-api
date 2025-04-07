@@ -20,9 +20,15 @@ builder.Services.AddCors(options =>
         {
             builder.WithOrigins("http://localhost:3000") // URL del frontend
                    .AllowAnyHeader()
-                   .AllowAnyMethod();
+                   .AllowAnyMethod()
+                   .WithExposedHeaders("X-Total-Count", "X-Total-Pages", "X-Current-Page", "X-Page-Size");
         });
 });
+
+
+/*{
+    throw new NotImplementedException();
+}*/
 
 var app = builder.Build();
 
