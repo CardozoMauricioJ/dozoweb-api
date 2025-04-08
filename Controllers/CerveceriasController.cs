@@ -136,67 +136,34 @@ namespace DozoWeb.Controllers
             return Ok(resultados);
         }
 
-        /*
-        private double GradosARadianes(double grados)
-        {
-            return grados * (Math.PI / 180);
-        }
-        */
-
-        // GET: api/Cervecerias/BuscarPorUbicacion
-        [HttpGet("BuscarPorUbicacion")]
-        public async Task<ActionResult<IEnumerable<Cerveceria>>> BuscarPorUbicacion(
-            double latitud,
-            double longitud,
-            double radioEnMetros)
+        // GET: api/Cervecerias/BuscarCerveceriasEnRectangulo
+        [HttpGet("BuscarCerveceriasEnRectangulo")]
+        public async Task<ActionResult<IEnumerable<Cerveceria>>> BuscarCerveceriasEnRectangulo(
+            double northEastLat,
+            double northEastLng,
+            double southWestLat,
+            double southWestLng)
         {
             // Validar entrada
-            if (radioEnMetros <= 0)
+            if (northEastLat < southWestLat || northEastLng < southWestLng)
             {
-                return BadRequest("El radio debe ser mayor a 0.");
+
+                return BadRequest("Los límites del rectángulo no son válidos.");
             }
 
-            // Obtener todas las cervecerías
-            var cervecerias = await _context.Cervecerias.ToListAsync();
+            var cerveceriasEnRectangulo = await _context.Cervecerias
+                .Where(c => c.Latitud != null && c.Longitud != null &&
+                            c.Latitud <= northEastLat && c.Latitud >= southWestLat &&
+                            c.Longitud <= northEastLng && c.Longitud >= southWestLng)
+                .ToListAsync();
 
-            // Filtrar cervecerías dentro del radio
-            var cerveceriasFiltradas = cervecerias.Where(c =>
-                c.Latitud != null && c.Longitud != null &&
-                CalcularDistancia(latitud, longitud, c.Latitud, c.Longitud) <= radioEnMetros
-            ).ToList();
-
-            if (!cerveceriasFiltradas.Any())
+            if (!cerveceriasEnRectangulo.Any())
             {
                 return NotFound("No se encontraron cervecerías en el área especificada.");
             }
 
-            return Ok(cerveceriasFiltradas);
+            return Ok(cerveceriasEnRectangulo);
         }
-
-        // Método para calcular la distancia entre dos puntos (Haversine Formula)
-        private double CalcularDistancia(double latitud1, double longitud1, double? latitud2, double? longitud2)
-        {
-            if (latitud2 == null || longitud2 == null)
-            {
-                throw new ArgumentException("Las coordenadas no pueden ser nulas.");
-            }
-
-            const double RadioTierraEnKm = 6371.0;
-
-            double lat1Rad = Math.PI * latitud1 / 180.0;
-            double lat2Rad = Math.PI * latitud2.Value / 180.0;
-            double deltaLat = Math.PI * (latitud2.Value - latitud1) / 180.0;
-            double deltaLong = Math.PI * (longitud2.Value - longitud1) / 180.0;
-
-            double a = Math.Sin(deltaLat / 2) * Math.Sin(deltaLat / 2) +
-                       Math.Cos(lat1Rad) * Math.Cos(lat2Rad) *
-                       Math.Sin(deltaLong / 2) * Math.Sin(deltaLong / 2);
-
-            double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
-
-            return RadioTierraEnKm * c * 1000; // Convertir a metros
-        }
-
 
         // GET: api/Cervecerias/{CerveceriaId}/Opiniones
         [HttpGet("{CerveceriaId}/Opiniones")]
