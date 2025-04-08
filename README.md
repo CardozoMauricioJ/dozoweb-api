@@ -1,8 +1,18 @@
-# DozoWeb API REST - Cervecerías (Proyecto en producción)
+# API REST de DozoWeb: Gestión Integral de Cervecerías y Opiniones con ASP.NET Core (Proyecto en producción)
 
-## Descripción
+# Descripción
 
-Este proyecto es una API REST desarrollada con ASP.NET Core para gestionar la información de cervecerías y las opiniones de los usuarios. Permite crear, editar, eliminar y buscar cervecerías, filtrar por precio y ubicación, y gestionar las opiniones de los usuarios.
+Este proyecto implementa una API REST robusta y escalable utilizando ASP.NET Core para la gestión completa de la información de cervecerías y las interacciones de los usuarios a través de opiniones.
+
+**Funcionalidades Clave:**
+
+* **Gestión de Cervecerías:** Permite la creación, lectura, actualización y eliminación (CRUD) de registros de cervecerías, incluyendo detalles como nombre, dirección, ubicación geográfica (latitud y longitud), y precio promedio.
+* **Búsqueda y Filtrado Avanzado:** Ofrece potentes capacidades de búsqueda por nombre y dirección, así como filtrado por rango de precios y ubicación geográfica (por radio y por área rectangular definida).
+* **Gestión de Opiniones de Usuarios:** Facilita la recuperación paginada de opiniones asociadas a cada cervecería.
+* **Arquitectura RESTful:** Diseño de endpoints intuitivo y los principios REST para una fácil integración con aplicaciones cliente.
+* **Tecnología:** Desarrollado con ASP.NET Core, Entity Framework Core para la gestión de la base de datos.
+
+Esta API es la base para construir una experiencia de descubrimiento de cervecerías rica e interactiva para los usuarios de DozoWeb.
 
 ## Tecnologías Utilizadas
 
