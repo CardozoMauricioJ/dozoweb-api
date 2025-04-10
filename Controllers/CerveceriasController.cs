@@ -155,6 +155,7 @@ namespace DozoWeb.Controllers
                 .Where(c => c.Latitud != null && c.Longitud != null &&
                             c.Latitud <= northEastLat && c.Latitud >= southWestLat &&
                             c.Longitud <= northEastLng && c.Longitud >= southWestLng)
+                .Include(c => c.Opiniones)
                 .ToListAsync();
 
             if (!cerveceriasEnRectangulo.Any())
