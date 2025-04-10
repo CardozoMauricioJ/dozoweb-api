@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 
 namespace DozoWeb.Models
 {
@@ -19,10 +18,10 @@ namespace DozoWeb.Models
         public decimal PrecioPromedio { get; set; } // Precio promedio
 
         [Range(-90, 90, ErrorMessage = "La latitud debe estar entre -90 y 90.")]
-        public double Latitud { get; set; } = 0.0; // Coordenadas de ubicación
+        public double? Latitud { get; set; } = 0.0; // Coordenadas de ubicación
 
         [Range(-180, 180, ErrorMessage = "La longitud debe estar entre -180 y 180.")]
-        public double Longitud { get; set; } = 0.0; // Coordenadas de ubicación
+        public double? Longitud { get; set; } = 0.0; // Coordenadas de ubicación
         public virtual ICollection<Opinion>? Opiniones { get; set; } //= new List<Opinion>();
 
     }

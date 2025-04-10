@@ -39,7 +39,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(); // Interfaz de usuario para Swagger
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 // Usar CORS
 app.UseCors("AllowSpecificOrigin");
