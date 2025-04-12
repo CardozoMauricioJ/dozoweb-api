@@ -1,4 +1,6 @@
 using DozoWeb.Data;
+using DozoWeb.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,6 +8,14 @@ var builder = WebApplication.CreateBuilder(args);
 // Configura la cadena de conexión para el DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddIdentity<AppUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
+     //.AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services.AddAuthentication();
+builder.Services.AddAuthorization();
 
 builder.Services.AddControllers();
 //builder.Services.AddAuthorization();
@@ -25,11 +35,6 @@ builder.Services.AddCors(options =>
         });
 });
 
-
-/*{
-    throw new NotImplementedException();
-}*/
-
 var app = builder.Build();
 
 // Configura el pipeline HTTP
@@ -39,10 +44,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(); // Interfaz de usuario para Swagger
 }
 
-//app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 
 // Usar CORS
 app.UseCors("AllowSpecificOrigin");
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
